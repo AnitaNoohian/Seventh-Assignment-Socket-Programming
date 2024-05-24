@@ -13,12 +13,8 @@ public class Client {
     // TODO: Add constructor and necessary methods
 
     public static final int PORT = 4444;
-    public static String name;
     public static void main(String[] args) throws IOException {
         // TODO: Implement the main method to start the client
-//        System.out.println("Enter your name:");
-//        Scanner inputname = new Scanner(System.in);
-//        name = inputname.nextLine();
         Socket client = new Socket("localhost",PORT);
         System.out.println("connected to server...");
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
