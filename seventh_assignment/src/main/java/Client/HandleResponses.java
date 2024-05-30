@@ -1,6 +1,8 @@
 package Client;
 
+import Server.Request;
 import Server.Service;
+import com.google.gson.Gson;
 
 import javax.imageio.IIOException;
 import java.io.*;
@@ -16,18 +18,28 @@ public class HandleResponses implements Runnable{
     public void run() {
         try {
             while (true) {
-                String input = in.readUTF();
-                if (input.equals("1")) {
-                    receiveFile();
-                } else if (input.equals("GROUP CHAT")) {
-                    chat();
-                } else {
-                    System.out.println(input);
-                }
+               String input = in.readUTF();
+                Gson gson = new Gson();
+                Response response = gson.fromJson(input, Response.class);
+                response.doWork();
             }
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            throw new RuntimeException(e);
         }
+//        try {
+//            while (true) {
+//                String input = in.readUTF();
+//                if (input.equals("1")) {
+//                    receiveFile();
+//                } else if (input.equals("GROUP CHAT")) {
+//                    chat();
+//                } else {
+//                    System.out.println(input);
+//                }
+//            }
+//        } catch (IOException e) {
+//            System.out.println(e.getMessage());
+//        }
     }
     private void receiveFile() throws IOException {
         int bytes = 0;

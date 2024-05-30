@@ -1,54 +1,98 @@
 package Server;
 
+import com.google.gson.Gson;
+
 import java.io.*;
 import java.net.Socket;
 import java.util.List;
 
 public class Service implements Runnable{
-        public static boolean check;
-        private Socket client;
-        private String name;
-        private DataInputStream in;
-        private DataOutputStream out;
-        private File[] files = new File[10];        //pathes of the files clients can download
-        private String[] fileNames = {"all of me", "a man without love", "birds", "blinding lights",
+    public static boolean check;
+    private Socket client;
+    public static String name; ///////////////////////////////////
+    private DataInputStream in;
+    private DataOutputStream out;
+    private File[] files = new File[10];        //paths of the files clients can download
+    private String[] fileNames = {"all of me", "a man without love", "birds", "blinding lights",
                 "don't matter to me", "feeling in my body", "out of time", "something in the way",
                 "why you wanna trip on me", "you put a spell on me"};
-        public Service (Socket socket) throws IOException {
-            addFile();
-            check = true;
-            this.client = socket;
-            this.in = new DataInputStream(client.getInputStream());
-            this.out = new DataOutputStream(client.getOutputStream());
-        }
+    public Service (Socket socket) throws IOException {
+        addFile();
+        check = true;
+        this.client = socket;
+        this.in = new DataInputStream(client.getInputStream());
+        this.out = new DataOutputStream(client.getOutputStream());
+    }
 
 
     @Override
     public void run() {
         try {
-            out.writeUTF("Enter your name:");
-            name = in.readUTF();
-            String request;
             while (true) {
-                out.writeUTF("CHOOSE: GROUP CHAT - LIST OF FILES TO DOWNLOAD");
-                request = in.readUTF();
-                if (request.equals("BACK")) {
-                    break;
-                } else if (request != null) {
-                    response(request);
+                String input = in.readUTF();
+                Gson gson = new Gson();
+                Request request = gson.fromJson(input, Request.class);
+                String type = request.getReqType(); //get request from socket and do base on what type it is
+                if (type.equals("GROUP CHAT")) {
+                    Server.groupClients.add(client);
+                    Response response = new Response("GROUP CHAT");
+                    String json = gson.toJson(response);
+                    out.writeUTF(json);
+                } else if (type.equals("NAME")) {
+                    Response response = new Response("NAME");
+                    String json = gson.toJson(response);
+                    out.writeUTF(json);
+                } else if (type.equals("MESSAGE")) {
+                    Response response = new Response("MESSAGE");
+                    String json = gson.toJson(response);
+                    out.writeUTF(json);
+                } else if (type.equals("DOWNLOAD FILE")) {
+                    Response response = new Response("DOWNLOAD FILE");
+                    String json = gson.toJson(response);
+                    out.writeUTF(json);
+                } else if (type.equals("CHOOSE FILE")) {
+                    Response response = new Response("CHOOSE FILE");
+                    String json = gson.toJson(response);
+                    out.writeUTF(json);
+                } else if (type.equals("BACK")) {
+                    Response response = new Response("BACK");
+                    String json = gson.toJson(response);
+                    out.writeUTF(json);
+                } else {
+                    out.writeUTF("Wrong request!!!");
                 }
             }
-        } catch (IOException e) {
+        } catch(IOException e){
             System.out.println(e.getMessage());
-        } finally {
-            try {
-                in.close();
-                out.close();
-                client.close();
-            } catch (IOException e) {
-                System.out.println(e.getMessage());
-            }
         }
+
+
+
+
+//        try {
+//            out.writeUTF("Enter your name:");
+//            name = in.readUTF();
+//            String request;
+//            while (true) {
+//                out.writeUTF("CHOOSE: GROUP CHAT - LIST OF FILES TO DOWNLOAD");
+//                request = in.readUTF();
+//                if (request.equals("BACK")) {
+//                    break;
+//                } else if (request != null) {
+//                    response(request);
+//                }
+//            }
+//        } catch (IOException e) {
+//            System.out.println(e.getMessage());
+//        } finally {
+//            try {
+//                in.close();
+//                out.close();
+//                client.close();
+//            } catch (IOException e) {
+//                System.out.println(e.getMessage());
+//            }
+//        }
 
     }
 

@@ -1,4 +1,8 @@
-package Server;
+package Client;
+
+import java.io.DataInputStream;
+import java.io.IOException;
+import java.net.Socket;
 
 public class Request {
 
@@ -22,4 +26,5 @@ public class Request {
     public String getReqType(){
         return reqType;
     }
+
 }
