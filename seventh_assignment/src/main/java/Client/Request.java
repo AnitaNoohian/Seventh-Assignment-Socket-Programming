@@ -26,5 +26,11 @@ public class Request {
     public String getReqType(){
         return reqType;
     }
+    public String getName(){
+        return name;
+    }
+    public String getMessage(){
+        return message;
+    }
 
 }

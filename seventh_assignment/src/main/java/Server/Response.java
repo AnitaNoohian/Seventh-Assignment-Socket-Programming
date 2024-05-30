@@ -44,7 +44,6 @@ public class Response {
         } else if(resType.equals("MESSAGE")) {
             Server.messages.add(name + ": " + message);
             sentToAll(message);
-            System.out.println(name + ": " + message);
         } else if (resType.equals("MESSAGE2")){
             System.out.println(name + ": " + message);
         } else if(resType.equals("DOWNLOAD FILE")){
@@ -57,13 +56,11 @@ public class Response {
     }
     private void sentToAll(String newMsg) throws IOException {
         for (Socket client : Server.groupClients){      //show a message in group chat for all clients in the chat
-            if (client != Service.client) {
-                DataOutputStream out = new DataOutputStream(client.getOutputStream());
-                Response response = new Response("MESSAGE2", name, newMsg);
-                Gson gson = new Gson();
-                String json = gson.toJson(response);
-                out.writeUTF(json);
-            }
+            DataOutputStream out = new DataOutputStream(client.getOutputStream());
+            Response response = new Response("MESSAGE2", name, newMsg);
+            Gson gson = new Gson();
+            String json = gson.toJson(response);
+            out.writeUTF(json);
         }
     }
     private void history(){
@@ -82,7 +79,7 @@ public class Response {
         System.out.println("Enter the number of the file you want to download OR enter \"BACK\"");
     }
     private void sendFile(int input) throws IOException {
-        File file = Service.files[input - 1];
+        File file = files[input - 1];
         FileReader fileInputStream = new FileReader(file);
 
         FileWriter fileOutputStream = new FileWriter("yourFile.txt");
@@ -92,7 +89,7 @@ public class Response {
             str += ((char) i);
         }
         fileOutputStream.write(str);
-        
+
         fileInputStream.close();
         fileOutputStream.close();
     }

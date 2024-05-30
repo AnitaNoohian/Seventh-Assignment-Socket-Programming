@@ -18,7 +18,7 @@ public class HandleResponses implements Runnable{
     public void run() {
         try {
             while (true) {
-               String input = in.readUTF();
+                String input = in.readUTF();
                 Gson gson = new Gson();
                 Response response = gson.fromJson(input, Response.class);
                 response.doWork();
@@ -41,27 +41,27 @@ public class HandleResponses implements Runnable{
 //            System.out.println(e.getMessage());
 //        }
     }
-    private void receiveFile() throws IOException {
-        int bytes = 0;
-        String path = in.readUTF();
-        FileOutputStream fileOutputStream = new FileOutputStream(path);
-
-        long size = in.readLong();
-        byte[] buffer = new byte[4 * 1024];
-        while (size > 0 && (bytes = in.read(buffer, 0, (int) Math.min(buffer.length, size))) != -1) {
-            fileOutputStream.write(buffer, 0, bytes);
-            size -= bytes;
-        }
-        System.out.println("File is Received");
-        fileOutputStream.close();
-    }
-    private void chat() throws IOException {
-        while (true) {
-            String input = in.readUTF();
-            System.out.println(input);
-            if (input.equals("BACK")) {
-                break;
-            }
-        }
-    }
+//    private void receiveFile() throws IOException {
+//        int bytes = 0;
+//        String path = in.readUTF();
+//        FileOutputStream fileOutputStream = new FileOutputStream(path);
+//
+//        long size = in.readLong();
+//        byte[] buffer = new byte[4 * 1024];
+//        while (size > 0 && (bytes = in.read(buffer, 0, (int) Math.min(buffer.length, size))) != -1) {
+//            fileOutputStream.write(buffer, 0, bytes);
+//            size -= bytes;
+//        }
+//        System.out.println("File is Received");
+//        fileOutputStream.close();
+//    }
+//    private void chat() throws IOException {
+//        while (true) {
+//            String input = in.readUTF();
+//            System.out.println(input);
+//            if (input.equals("BACK")) {
+//                break;
+//            }
+//        }
+//    }
 }
