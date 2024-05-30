@@ -24,8 +24,10 @@ public class Client {
         DataOutputStream out = new DataOutputStream(client.getOutputStream());
         HandleResponses response = new HandleResponses(client);
         new Thread(response).start();
-        menu();
-        run(in,out);
+        while (true) {
+            menu();
+            run(in, out);
+        }
     }
 
     public static void menu(){
@@ -47,7 +49,7 @@ public class Client {
             } else if (input.equals("DOWNLOAD FILE")){
                 request = new Request(input);
             } else if(input.equals("BACK")) {
-                request = new Request("BACK");
+                break;
             } else {
                 boolean check = true;
                 for (String num : nums){

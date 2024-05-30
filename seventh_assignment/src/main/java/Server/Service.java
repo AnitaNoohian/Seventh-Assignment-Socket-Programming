@@ -7,13 +7,13 @@ import java.net.Socket;
 import java.util.List;
 
 public class Service implements Runnable{
-    public static boolean check;
-    private Socket client;
-    public static String name; ///////////////////////////////////
-    private DataInputStream in;
-    private DataOutputStream out;
-    private File[] files = new File[10];        //paths of the files clients can download
-    private String[] fileNames = {"all of me", "a man without love", "birds", "blinding lights",
+    public static boolean check; //////////
+    protected static Socket client;
+    protected static String name;
+    private DataInputStream in; //////////
+    private DataOutputStream out; /////////
+    protected static File[] files = new File[10];        //paths of the files clients can download
+    protected static String[] fileNames = {"all of me", "a man without love", "birds", "blinding lights",
                 "don't matter to me", "feeling in my body", "out of time", "something in the way",
                 "why you wanna trip on me", "you put a spell on me"};
     public Service (Socket socket) throws IOException {
@@ -39,11 +39,11 @@ public class Service implements Runnable{
                     String json = gson.toJson(response);
                     out.writeUTF(json);
                 } else if (type.equals("NAME")) {
-                    Response response = new Response("NAME");
+                    Response response = new Response("NAME", request.getName());
                     String json = gson.toJson(response);
                     out.writeUTF(json);
                 } else if (type.equals("MESSAGE")) {
-                    Response response = new Response("MESSAGE");
+                    Response response = new Response("MESSAGE", request.getName(), request.getMessage());
                     String json = gson.toJson(response);
                     out.writeUTF(json);
                 } else if (type.equals("DOWNLOAD FILE")) {
@@ -51,7 +51,7 @@ public class Service implements Runnable{
                     String json = gson.toJson(response);
                     out.writeUTF(json);
                 } else if (type.equals("CHOOSE FILE")) {
-                    Response response = new Response("CHOOSE FILE");
+                    Response response = new Response("CHOOSE FILE", Integer.parseInt(input));
                     String json = gson.toJson(response);
                     out.writeUTF(json);
                 } else if (type.equals("BACK")) {
