@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
 import java.util.Scanner;
+
+import Server.Server;
 import com.google.gson.Gson;
 
 // Client Class
@@ -35,7 +37,8 @@ public class Client {
         System.out.println("[Enter BACK whenever you want to go back!]");
     }
     public static void run(BufferedReader in,DataOutputStream out) throws IOException {
-        String input,name = null;
+        String input;
+        main:
         while (true) {
             input = in.readLine();
             Request request = null;
@@ -44,27 +47,40 @@ public class Client {
                 request = new Request(input);
                 String json = gson.toJson(request);
                 out.writeUTF(json);
-                name = in.readLine();
+                String name = in.readLine();
                 request = new Request("NAME",name);
+                String json1 = gson.toJson(request);
+                out.writeUTF(json1);
+                while (true) {
+                   String msg = in.readLine();
+                   if (msg.equals("BACK")) {
+                       request = new Request("BACK");
+                       String json2 = gson.toJson(request);
+                       out.writeUTF(json2);
+                       break main;
+                   } else {
+                       request = new Request("MESSAGE", name, msg);
+                       String json2 = gson.toJson(request);
+                       out.writeUTF(json2);
+                   }
+                }
             } else if (input.equals("DOWNLOAD FILE")){
                 request = new Request(input);
+                String json = gson.toJson(request);
+                out.writeUTF(json);
+                String num = in.readLine();
+                if (num.equals("BACK")){
+                    break main;
+                } else {
+                    request = new Request("CHOOSE FILE", Integer.parseInt(num));
+                    String json1 = gson.toJson(request);
+                    out.writeUTF(json1);
+                    System.out.println("Your file has been downloaded!\n");
+                    break main;
+                }
             } else if(input.equals("BACK")) {
                 break;
-            } else {
-                boolean check = true;
-                for (String num : nums){
-                    if (input.equals(num)){
-                        request = new Request("CHOOSE FILE");
-                        check = false;
-                    }
-                }
-                if (check) {
-                    request = new Request("MESSAGE", name, input);
-                }
-                System.out.println("Wrong input!!!");
             }
-            String json = gson.toJson(request);
-            out.writeUTF(json);
         }
     }
 }

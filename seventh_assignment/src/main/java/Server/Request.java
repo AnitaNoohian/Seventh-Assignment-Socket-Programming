@@ -5,6 +5,7 @@ public class Request {
     private String reqType;
     private String name;
     private String message;
+    private int num;
 
     public Request(String type) {
         this.reqType = type;
@@ -12,6 +13,10 @@ public class Request {
     public Request(String type, String name){
         this.reqType = type;
         this.name = name;
+    }
+    public Request(String type, int num){
+        this.reqType = type;
+        this.num = num;
     }
     public Request(String type, String name, String message){
         this.reqType = type;
@@ -27,5 +32,8 @@ public class Request {
     }
     public String getMessage(){
         return message;
+    }
+    public int getNum(){
+        return num;
     }
 }

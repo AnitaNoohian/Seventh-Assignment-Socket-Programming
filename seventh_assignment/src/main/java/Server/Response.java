@@ -18,16 +18,12 @@ public class Response {
 
     public Response(String type){
         this.resType = type;
-        if (type.equals("DOWNLOAD FILE")){
-            addFile();
-        }
     }
     public Response(String type, String name){
         this.resType = type;
         this.name = name;
-        Service.name = name;
     }
-    public Response(String type, String name, String message) throws IOException {
+    public Response(String type, String name, String message) {
         this.resType = type;
         this.name = name;
         this.message = message;
@@ -36,24 +32,21 @@ public class Response {
         this.resType = type;
         this.numFile = num;
     }
-    public void doWork() throws IOException {
-        if (resType.equals("GROUP CHAT")){
-            System.out.println("Enter your name:");
-        } else if(resType.equals("NAME")) {
-            history();
-        } else if(resType.equals("MESSAGE")) {
-            Server.messages.add(name + ": " + message);
-            sentToAll(message);
-        } else if (resType.equals("MESSAGE2")){
-            System.out.println(name + ": " + message);
-        } else if(resType.equals("DOWNLOAD FILE")){
-            listOfFiles();
-        } else if(resType.equals("CHOOSE FILE")){
-            sendFile(numFile);
-        } else {
 
-        }
-    }
+//    public void doWork() throws IOException {
+//        if (resType.equals("GROUP CHAT")){
+//            System.out.println("Enter your name:");
+//        } else if(resType.equals("MESSAGE")) {
+//            Server.messages.add(name + ": " + message);
+//            sentToAll(message);
+//        } else if (resType.equals("MESSAGE2")){
+//            System.out.println(name + ": " + message);
+//        } else if(resType.equals("DOWNLOAD FILE")){
+//            listOfFiles();
+//        } else if(resType.equals("CHOOSE FILE")){
+//            sendFile(numFile);
+//        }
+//    }
     private void sentToAll(String newMsg) throws IOException {
         for (Socket client : Server.groupClients){      //show a message in group chat for all clients in the chat
             DataOutputStream out = new DataOutputStream(client.getOutputStream());

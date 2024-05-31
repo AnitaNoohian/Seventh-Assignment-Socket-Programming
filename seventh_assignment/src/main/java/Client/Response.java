@@ -12,16 +12,13 @@ public class Response {
     private String message;
     private String name;
     private int numFile;
-    private static File[] files = new File[10];        //paths of the files clients can download
+    private static String[] files = new String[10];        //paths of the files clients can download
     private static String[] fileNames = {"all of me", "a man without love", "birds", "blinding lights",
             "don't matter to me", "feeling in my body", "out of time", "something in the way",
             "why you wanna trip on me", "you put a spell on me"};
 
     public Response(String type){
         this.resType = type;
-        if (type.equals("DOWNLOAD FILE")){
-            addFile();
-        }
     }
     public Response(String type, String name){
         this.resType = type;
@@ -36,22 +33,24 @@ public class Response {
         this.resType = type;
         this.numFile = num;
     }
+    public String getResType(){
+        return resType;
+    }
+    public String getMessage(){
+        return message;
+    }
     public void doWork() throws IOException {
         if (resType.equals("GROUP CHAT")){
             System.out.println("Enter your name:");
-        } else if(resType.equals("NAME")) {
-            history();
         } else if(resType.equals("MESSAGE")) {
-            Server.messages.add(name + ": " + message);
-            sentToAll(message);
+            System.out.println(message);
         } else if (resType.equals("MESSAGE2")){
             System.out.println(name + ": " + message);
         } else if(resType.equals("DOWNLOAD FILE")){
             listOfFiles();
         } else if(resType.equals("CHOOSE FILE")){
+            addFile();
             sendFile(numFile);
-        } else {
-
         }
     }
     private void sentToAll(String newMsg) throws IOException {
@@ -79,8 +78,7 @@ public class Response {
         System.out.println("Enter the number of the file you want to download OR enter \"BACK\"");
     }
     private void sendFile(int input) throws IOException {
-        File file = files[input - 1];
-        FileReader fileInputStream = new FileReader(file);
+        FileReader fileInputStream = new FileReader(files[input - 1]);
 
         FileWriter fileOutputStream = new FileWriter("yourFile.txt");
         String str = " ";
@@ -94,15 +92,15 @@ public class Response {
         fileOutputStream.close();
     }
     private void addFile() {
-        this.files[0] = new File("seventh_assignment\\src\\main\\java\\Server\\data\\all-of-me-john-legend.txt");
-        this.files[1] = new File("seventh_assignment\\src\\main\\java\\Server\\data\\a-man-without-love-ngelbert-Hmperdinck.txt");
-        this.files[2] = new File("seventh_assignment\\src\\main\\java\\Server\\data\\birds-imagine-dragons.txt");
-        this.files[3] = new File("seventh_assignment\\src\\main\\java\\Server\\data\\blinding-lights-the-weekend.txt");
-        this.files[4] = new File("seventh_assignment\\src\\main\\java\\Server\\data\\dont-matter-to-me-drake.txt");
-        this.files[5] = new File("seventh_assignment\\src\\main\\java\\Server\\data\\feeling-in-my-body-elvis.txt");
-        this.files[6] = new File("seventh_assignment\\src\\main\\java\\Server\\data\\out-of-time-the-weekend.txt");
-        this.files[7] = new File("seventh_assignment\\src\\main\\java\\Server\\data\\something-in-the-way-nirvana.txt");
-        this.files[8] = new File("seventh_assignment\\src\\main\\java\\Server\\data\\why-you-wanna-trip-on-me-michael-jackson.txt");
-        this.files[9] = new File("seventh_assignment\\src\\main\\java\\Server\\data\\you-put-a-spell-on-me-austin-giorgio.txt");
+        this.files[0] = "seventh_assignment\\src\\main\\java\\Server\\data\\all-of-me-john-legend.txt";
+        this.files[1] = "seventh_assignment\\src\\main\\java\\Server\\data\\a-man-without-love-ngelbert-Hmperdinck.txt";
+        this.files[2] = "seventh_assignment\\src\\main\\java\\Server\\data\\birds-imagine-dragons.txt";
+        this.files[3] = "seventh_assignment\\src\\main\\java\\Server\\data\\blinding-lights-the-weekend.txt";
+        this.files[4] = "seventh_assignment\\src\\main\\java\\Server\\data\\dont-matter-to-me-drake.txt";
+        this.files[5] = "seventh_assignment\\src\\main\\java\\Server\\data\\feeling-in-my-body-elvis.txt";
+        this.files[6] = "seventh_assignment\\src\\main\\java\\Server\\data\\out-of-time-the-weekend.txt";
+        this.files[7] = "seventh_assignment\\src\\main\\java\\Server\\data\\something-in-the-way-nirvana.txt";
+        this.files[8] = "seventh_assignment\\src\\main\\java\\Server\\data\\why-you-wanna-trip-on-me-michael-jackson.txt";
+        this.files[9] = "seventh_assignment\\src\\main\\java\\Server\\data\\you-put-a-spell-on-me-austin-giorgio.txt";
     }
 }
